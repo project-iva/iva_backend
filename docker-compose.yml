@@ -1,0 +1,105 @@
+version: '3.7'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: ./iva_backend/Dockerfile
+    command: gunicorn iva_backend.wsgi:application --bind 0.0.0.0:8000 --reload
+    volumes:
+      - .:/usr/src/app/
+      - static_volume:/usr/src/app/staticfiles
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    expose:
+      - 8000
+    depends_on:
+      - db
+      - redis
+    networks:
+      - backend
+    labels:
+      - traefik.enable=false
+
+  celery:
+    build:
+      context: .
+      dockerfile: ./iva_backend/Dockerfile
+    command: celery worker --app=iva_backend --loglevel=info
+    volumes:
+      - .:/usr/src/app/
+    environment:
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      - app
+      - redis
+    networks:
+      - backend
+    labels:
+      - traefik.enable=false
+
+  redis:
+    image: redis:5-alpine
+    networks:
+      - backend
+    labels:
+      - traefik.enable=false
+
+  web:
+    build: ./nginx
+    volumes:
+      - static_volume:/usr/src/app/staticfiles
+    ports:
+      - 8000:80
+    depends_on:
+      - app
+    labels:
+      - traefik.enable=true
+      - traefik.frontend.rule=Host:iva-backend.docker.localhost
+      - traefik.docker.network=iva_frontend
+    networks:
+      - frontend
+      - backend
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+    - dbdata:/var/lib/mysql
+    environment:
+    - MYSQL_DATABASE=homestead
+    - MYSQL_USER=homestead
+    - MYSQL_PASSWORD=secret
+    - MYSQL_ROOT_PASSWORD=secret
+    ports:
+    - 33061:3306
+    networks:
+      - backend
+    labels:
+      - traefik.enable=false
+
+  traefik:
+    image: traefik
+    command: --web --docker --docker.domain=docker.localhost
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - frontend
+    labels:
+      - traefik.enable=false
+
+volumes:
+  dbdata:
+  static_volume:
+
+networks:
+  frontend:
+    external:
+      name: iva_frontend
+
+  backend:
