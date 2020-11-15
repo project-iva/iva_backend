@@ -15,6 +15,7 @@ drf-nested-routers = "*"
 django-extensions = "*"
 celery = "*"
 redis = "*"
+django-cors-headers = "*"
 
 [requires]
 python_version = "3.7"
