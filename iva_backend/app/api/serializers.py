@@ -19,3 +19,11 @@ class TrainingInstanceSerializer(serializers.ModelSerializer):
     class Meta:
         model = TrainingInstance
         fields = ['uuid', 'message_text', 'intent', 'created_at', 'intent_label']
+
+
+class ExportTrainingInstancesSerializer(serializers.ModelSerializer):
+    intent_label = serializers.ReadOnlyField(source='intent.intent')
+
+    class Meta:
+        model = TrainingInstance
+        fields = ['message_text', 'intent_label']

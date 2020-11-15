@@ -3,6 +3,6 @@ from iva_backend.app.api.serializers import IntentSerializer
 from iva_backend.app.models import Intent
 
 
-class IntentViewSet(viewsets.ModelViewSet):
+class IntentsViewSet(viewsets.ModelViewSet):
     queryset = Intent.objects.all()
     serializer_class = IntentSerializer
