@@ -10,5 +10,5 @@ class Intent(models.Model):
 class TrainingInstance(models.Model):
     uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     message_text = models.TextField()
-    intent = models.ForeignKey(Intent, on_delete=models.PROTECT, related_name='training_instances')
+    intent = models.ForeignKey(Intent, on_delete=models.CASCADE, related_name='training_instances')
     created_at = models.DateTimeField(auto_now_add=True)

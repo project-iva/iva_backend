@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('uuid', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
                 ('message_text', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('intent', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='training_instances', to='app.intent')),
+                ('intent', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='training_instances', to='app.intent')),
             ],
         ),
     ]

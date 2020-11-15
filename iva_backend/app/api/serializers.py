@@ -3,6 +3,11 @@ from iva_backend.app.models import Intent, TrainingInstance
 
 
 class IntentSerializer(serializers.ModelSerializer):
+    training_instances_count = serializers.SerializerMethodField()
+
+    def get_training_instances_count(self, obj):
+        return obj.training_instances.count()
+
     class Meta:
         model = Intent
         fields = '__all__'
