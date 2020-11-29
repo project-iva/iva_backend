@@ -6,7 +6,7 @@ class IntentSerializer(serializers.ModelSerializer):
     training_instances_count = serializers.SerializerMethodField()
 
     def get_training_instances_count(self, obj):
-        return obj.training_instances.count()
+        return obj.training_instances.filter(approved=True).count()
 
     class Meta:
         model = Intent
@@ -18,7 +18,7 @@ class TrainingInstanceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TrainingInstance
-        fields = ['uuid', 'message_text', 'intent', 'created_at', 'intent_label']
+        fields = ['uuid', 'message_text', 'intent', 'created_at', 'intent_label', 'approved']
 
 
 class ExportTrainingInstancesSerializer(serializers.ModelSerializer):

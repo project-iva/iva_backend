@@ -16,7 +16,7 @@ class TrainingInstancesExportView(APIView):
     renderer_classes = [JSONRenderer]
 
     def get(self, request):
-        queryset = TrainingInstance.objects.all()
+        queryset = TrainingInstance.objects.filter(approved=True)
         serializer = ExportTrainingInstancesSerializer(queryset, many=True)
         response = Response(serializer.data)
         response['Content-Disposition'] = 'attachment'
