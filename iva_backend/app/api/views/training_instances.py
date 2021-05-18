@@ -3,7 +3,8 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from iva_backend.app.api.serializers import TrainingInstanceSerializer, ExportTrainingInstancesSerializer
+from iva_backend.app.api.serializers.training_instance_serliazer import TrainingInstanceSerializer, \
+    ExportTrainingInstancesSerializer
 from iva_backend.app.models import TrainingInstance
 
 
