@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from iva_backend.app.models import Intent
+from iva_backend.app.models.intent import Intent
 
 
 class IntentSerializer(serializers.ModelSerializer):

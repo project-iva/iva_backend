@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from iva_backend.app.models import TrainingInstance
+from iva_backend.app.models.training_instance import TrainingInstance
 
 
 class TrainingInstanceSerializer(serializers.ModelSerializer):

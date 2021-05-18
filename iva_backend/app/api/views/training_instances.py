@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from iva_backend.app.api.serializers.training_instance_serliazer import TrainingInstanceSerializer, \
     ExportTrainingInstancesSerializer
-from iva_backend.app.models import TrainingInstance
+from iva_backend.app.models.training_instance import TrainingInstance
 
 
 class TrainingInstancesViewSet(viewsets.ModelViewSet):
