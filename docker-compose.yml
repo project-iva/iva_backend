@@ -47,7 +47,7 @@ services:
     labels:
       - traefik.enable=false
 
-  web:
+  backend_web:
     build: ./nginx
     volumes:
       - static_volume:/usr/src/app/staticfiles
@@ -58,9 +58,9 @@ services:
     labels:
       - traefik.enable=true
       - traefik.frontend.rule=Host:iva-backend.docker.localhost
-      - traefik.docker.network=iva_frontend
+      - traefik.docker.network=iva_network
     networks:
-      - frontend
+      - iva_network
       - backend
 
   db:
@@ -80,26 +80,12 @@ services:
     labels:
       - traefik.enable=false
 
-  traefik:
-    image: traefik
-    command: --web --docker --docker.domain=docker.localhost
-    ports:
-      - 80:80
-      - 8080:8080
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    networks:
-      - frontend
-    labels:
-      - traefik.enable=false
-
 volumes:
   dbdata:
   static_volume:
 
 networks:
-  frontend:
-    external:
-      name: iva_frontend
+  iva_network:
+      name: iva_network
 
   backend:
