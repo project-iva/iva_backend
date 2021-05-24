@@ -16,6 +16,7 @@ django-extensions = "*"
 celery = "*"
 redis = "*"
 django-cors-headers = "*"
+requests = "*"
 
 [requires]
 python_version = "3.9"

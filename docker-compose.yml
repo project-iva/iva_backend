@@ -12,6 +12,7 @@ services:
     environment:
       - CELERY_BROKER=redis://redis:6379/0
       - CELERY_BACKEND=redis://redis:6379/0
+      - IVA_URL=http://iva:8001
     expose:
       - 8000
     depends_on:
@@ -19,6 +20,7 @@ services:
       - redis
     networks:
       - backend
+      - iva_network
     labels:
       - traefik.enable=false
 
@@ -37,6 +39,7 @@ services:
       - redis
     networks:
       - backend
+      - iva_network
     labels:
       - traefik.enable=false
 
