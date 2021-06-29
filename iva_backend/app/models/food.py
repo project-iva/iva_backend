@@ -69,7 +69,7 @@ class MealIngredient(models.Model):
 
     @property
     def kcal(self) -> float:
-        if self.ingredient.kcal_per == IngredientKcalPerChoices.PER_100:
+        if self.ingredient.kcal_per == IngredientKcalPerChoices.PER_100_UNITS:
             return (self.amount / 100) * self.ingredient.kcal
 
         return self.amount * self.ingredient.kcal
