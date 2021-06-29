@@ -62,6 +62,16 @@ class Meal(models.Model):
 
         return kcal_sum
 
+    @property
+    def can_be_prepared(self) -> bool:
+        """
+        Checks if the meal can be prepared with the currently available ingredients
+        """
+        for meal_ingredient in self.ingredients.all():
+            if not meal_ingredient.is_available:
+                return False
+        return True
+
 
 class MealIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
@@ -74,6 +84,10 @@ class MealIngredient(models.Model):
             return (self.amount / 100) * self.ingredient.kcal
 
         return self.amount * self.ingredient.kcal
+
+    @property
+    def is_available(self) -> bool:
+        return self.ingredient.amount >= self.amount
 
 
 class MealTrackerEntry(models.Model):
