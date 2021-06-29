@@ -15,5 +15,6 @@ class MealIngredientInlineAdmin(admin.TabularInline):
 
 @admin.register(Meal)
 class MealAdmin(admin.ModelAdmin):
+    readonly_fields = ['kcal']
     inlines = [MealIngredientInlineAdmin]
 

@@ -8,10 +8,9 @@ class IngredientUnitChoices(models.TextChoices):
     PACKAGE = 'PACKAGE', 'package'
 
 
-class IngredientKcalUnitChoices(models.TextChoices):
-    PER_100_ML = 'PER_100_ML', 'Per 100 ml'
-    PER_100_MG = 'PER_100_MG', 'Per 100 mg'
-    PER_PACKAGE = 'PER_PACKAGE', 'Per package'
+class IngredientKcalPerChoices(models.TextChoices):
+    PER_1 = 'PER_1', 'Per 1'
+    PER_100 = 'PER_100', 'Per 100'
 
 
 class MealTypeChoices(models.TextChoices):
@@ -29,9 +28,9 @@ class Ingredient(models.Model):
         choices=IngredientUnitChoices.choices,
     )
     kcal = models.IntegerField()
-    kcal_per_unit = models.CharField(
-        max_length=11,
-        choices=IngredientKcalUnitChoices.choices,
+    kcal_per = models.CharField(
+        max_length=7,
+        choices=IngredientKcalPerChoices.choices,
     )
 
     class Meta:
@@ -54,8 +53,23 @@ class Meal(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    @property
+    def kcal(self) -> float:
+        kcal_sum = 0.0
+        for ingredient in self.ingredients.all():
+            kcal_sum += ingredient.kcal
+
+        return kcal_sum
+
 
 class MealIngredient(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.PROTECT)
     meal = models.ForeignKey(Meal, related_name='ingredients', on_delete=models.CASCADE)
     amount = models.FloatField()
+
+    @property
+    def kcal(self) -> float:
+        if self.ingredient.kcal_per == IngredientKcalPerChoices.PER_100:
+            return (self.amount / 100) * self.ingredient.kcal
+
+        return self.amount * self.ingredient.kcal
