@@ -9,8 +9,8 @@ class IngredientUnitChoices(models.TextChoices):
 
 
 class IngredientKcalPerChoices(models.TextChoices):
-    PER_1 = 'PER_1', 'Per 1'
-    PER_100 = 'PER_100', 'Per 100'
+    PER_1_UNIT = 'PER_1_UNIT', 'Per 1 unit'
+    PER_100_UNITS = 'PER_100_UNITS', 'Per 100 units'
 
 
 class MealTypeChoices(models.TextChoices):
@@ -29,7 +29,7 @@ class Ingredient(models.Model):
     )
     kcal = models.IntegerField()
     kcal_per = models.CharField(
-        max_length=7,
+        max_length=13,
         choices=IngredientKcalPerChoices.choices,
     )
 
