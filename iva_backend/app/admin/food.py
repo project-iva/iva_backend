@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from iva_backend.app.models import Ingredient, Meal, MealIngredient
+from iva_backend.app.models import Ingredient, Meal, MealIngredient, MealTrackerEntry
 
 
 @admin.register(Ingredient)
@@ -18,3 +18,7 @@ class MealAdmin(admin.ModelAdmin):
     readonly_fields = ['kcal']
     inlines = [MealIngredientInlineAdmin]
 
+
+@admin.register(MealTrackerEntry)
+class MealTrackerEntryAdmin(admin.ModelAdmin):
+    pass

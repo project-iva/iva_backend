@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import UniqueConstraint
+from django.utils import timezone
 
 
 class IngredientUnitChoices(models.TextChoices):
@@ -73,3 +74,11 @@ class MealIngredient(models.Model):
             return (self.amount / 100) * self.ingredient.kcal
 
         return self.amount * self.ingredient.kcal
+
+
+class MealTrackerEntry(models.Model):
+    meal = models.ForeignKey(Meal, on_delete=models.PROTECT)
+    date = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        verbose_name_plural = 'Meal tracker entries'
