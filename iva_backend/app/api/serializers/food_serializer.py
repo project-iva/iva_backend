@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from iva_backend.app.models import Meal, MealIngredient
+from iva_backend.app.models import Meal, MealIngredient, MealTrackerEntry
 
 
 class MealIngredientSerializer(serializers.ModelSerializer):
@@ -19,3 +19,11 @@ class MealSerializer(serializers.ModelSerializer):
         model = Meal
         fields = ['name', 'type', 'kcal', 'ingredients']
         read_only_fields = ['kcal']
+
+
+class MealTrackerEntrySerializer(serializers.ModelSerializer):
+    meal = MealSerializer()
+
+    class Meta:
+        model = MealTrackerEntry
+        fields = ['meal', 'date']
