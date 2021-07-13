@@ -4,3 +4,4 @@ from .mindful_session import MindfulSession
 from .sleep_analysis import SleepAnalysis
 from .food import *
 from .measurable_item import *
+from .shopping_list_rule import *
