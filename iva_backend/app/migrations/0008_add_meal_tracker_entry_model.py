@@ -8,7 +8,7 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0006_add_food_models'),
+        ('app', '0007_add_food_models'),
     ]
 
     operations = [
@@ -19,5 +19,8 @@ class Migration(migrations.Migration):
                 ('date', models.DateTimeField(default=django.utils.timezone.now)),
                 ('meal', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='app.meal')),
             ],
+            options={
+                'verbose_name_plural': 'Meal tracker entries',
+            },
         ),
     ]

@@ -17,6 +17,7 @@ celery = "*"
 redis = "*"
 django-cors-headers = "*"
 requests = "*"
+django-polymorphic = "*"
 
 [requires]
 python_version = "3.9"

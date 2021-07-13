@@ -1,37 +1,19 @@
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.utils import timezone
+from iva_backend.app.models.measurable_item import MeasurableItem
 
 
-class IngredientUnitChoices(models.TextChoices):
-    ML = 'ML', 'ml'
-    MG = 'MG', 'mg'
-    PACKAGE = 'PACKAGE', 'package'
+class Ingredient(MeasurableItem):
+    class KcalPer(models.TextChoices):
+        PER_1_UNIT = 'PER_1_UNIT', 'Per 1 unit'
+        PER_100_UNITS = 'PER_100_UNITS', 'Per 100 units'
 
-
-class IngredientKcalPerChoices(models.TextChoices):
-    PER_1_UNIT = 'PER_1_UNIT', 'Per 1 unit'
-    PER_100_UNITS = 'PER_100_UNITS', 'Per 100 units'
-
-
-class MealTypeChoices(models.TextChoices):
-    BREAKFAST = 'BREAKFAST', 'Breakfast'
-    LUNCH = 'LUNCH', 'Lunch'
-    DINNER = 'DINNER', 'Dinner'
-    SNACK = 'SNACK', 'Snack'
-
-
-class Ingredient(models.Model):
     name = models.CharField(max_length=128)
-    amount = models.FloatField()
-    unit = models.CharField(
-        max_length=7,
-        choices=IngredientUnitChoices.choices,
-    )
     kcal = models.IntegerField()
     kcal_per = models.CharField(
         max_length=13,
-        choices=IngredientKcalPerChoices.choices,
+        choices=KcalPer.choices,
     )
 
     class Meta:
@@ -42,10 +24,16 @@ class Ingredient(models.Model):
 
 
 class Meal(models.Model):
+    class Type(models.TextChoices):
+        BREAKFAST = 'BREAKFAST', 'Breakfast'
+        LUNCH = 'LUNCH', 'Lunch'
+        DINNER = 'DINNER', 'Dinner'
+        SNACK = 'SNACK', 'Snack'
+
     name = models.CharField(max_length=128)
     type = models.CharField(
         max_length=9,
-        choices=MealTypeChoices.choices,
+        choices=Type.choices,
     )
 
     class Meta:
@@ -80,7 +68,7 @@ class MealIngredient(models.Model):
 
     @property
     def kcal(self) -> float:
-        if self.ingredient.kcal_per == IngredientKcalPerChoices.PER_100_UNITS:
+        if self.ingredient.kcal_per == Ingredient.KcalPer.PER_100_UNITS:
             return (self.amount / 100) * self.ingredient.kcal
 
         return self.amount * self.ingredient.kcal
