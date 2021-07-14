@@ -9,6 +9,7 @@ class ShoppingListRule(models.Model):
         primary_key=True,
     )
     amount_threshold = models.FloatField()
+    amount_to_purchase = models.FloatField()
 
     def __str__(self) -> str:
         return self.item.name
