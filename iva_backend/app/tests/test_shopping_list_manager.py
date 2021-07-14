@@ -51,7 +51,7 @@ class ShoppingListManagerTestCase(TestCase):
         shopping_list = ShoppingListManager.get_or_create_shopping_list()
         self.assertEquals(shopping_list.items.count(), 0)
 
-        item = MeasurableItem.objects.create(amount=100, unit=MeasurableItem.Unit.ML)
+        item = MeasurableItem.objects.create(name='item', amount=100, unit=MeasurableItem.Unit.ML)
 
         # add item on the list
         amount = 10
