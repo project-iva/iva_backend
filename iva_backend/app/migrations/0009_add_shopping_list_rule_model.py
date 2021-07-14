@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ShoppingListRule',
             fields=[
-                ('item', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, serialize=False, to='app.measurableitem')),
+                ('item', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, primary_key=True, related_name='shopping_list_rule', serialize=False, to='app.measurableitem')),
                 ('amount_threshold', models.FloatField()),
                 ('amount_to_purchase', models.FloatField()),
             ],
