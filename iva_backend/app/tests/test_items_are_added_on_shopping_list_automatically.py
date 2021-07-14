@@ -1,5 +1,5 @@
 from django.test import TestCase
-from iva_backend.app.models import Ingredient, MeasurableItem, Meal, MealIngredient, MealTrackerEntry, ShoppingListRule
+from iva_backend.app.models import Ingredient, MeasurableItem, ShoppingListRule
 from iva_backend.shopping_list_manager import ShoppingListManager
 
 
