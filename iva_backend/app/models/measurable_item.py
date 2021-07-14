@@ -8,6 +8,7 @@ class MeasurableItem(PolymorphicModel):
         MG = 'MG', 'mg'
         PACKAGE = 'PACKAGE', 'package'
 
+    name = models.CharField(max_length=128, unique=True)
     amount = models.FloatField()
     unit = models.CharField(
         max_length=7,

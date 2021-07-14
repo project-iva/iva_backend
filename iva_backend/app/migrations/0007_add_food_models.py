@@ -16,7 +16,6 @@ class Migration(migrations.Migration):
             name='Ingredient',
             fields=[
                 ('measurableitem_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='app.measurableitem')),
-                ('name', models.CharField(max_length=128, unique=True)),
                 ('kcal', models.IntegerField()),
                 ('kcal_per', models.CharField(choices=[('PER_1_UNIT', 'Per 1 unit'), ('PER_100_UNITS', 'Per 100 units')], max_length=13)),
             ],

@@ -8,7 +8,6 @@ class Ingredient(MeasurableItem):
         PER_1_UNIT = 'PER_1_UNIT', 'Per 1 unit'
         PER_100_UNITS = 'PER_100_UNITS', 'Per 100 units'
 
-    name = models.CharField(max_length=128, unique=True)
     kcal = models.IntegerField()
     kcal_per = models.CharField(
         max_length=13,
