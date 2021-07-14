@@ -16,17 +16,21 @@ class Migration(migrations.Migration):
             name='Ingredient',
             fields=[
                 ('measurableitem_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='app.measurableitem')),
-                ('name', models.CharField(max_length=128)),
+                ('name', models.CharField(max_length=128, unique=True)),
                 ('kcal', models.IntegerField()),
                 ('kcal_per', models.CharField(choices=[('PER_1_UNIT', 'Per 1 unit'), ('PER_100_UNITS', 'Per 100 units')], max_length=13)),
             ],
+            options={
+                'abstract': False,
+                'base_manager_name': 'objects',
+            },
             bases=('app.measurableitem',),
         ),
         migrations.CreateModel(
             name='Meal',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=128)),
+                ('name', models.CharField(max_length=128, unique=True)),
                 ('type', models.CharField(choices=[('BREAKFAST', 'Breakfast'), ('LUNCH', 'Lunch'), ('DINNER', 'Dinner'), ('SNACK', 'Snack')], max_length=9)),
             ],
         ),
@@ -38,13 +42,5 @@ class Migration(migrations.Migration):
                 ('ingredient', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='app.ingredient')),
                 ('meal', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='ingredients', to='app.meal')),
             ],
-        ),
-        migrations.AddConstraint(
-            model_name='meal',
-            constraint=models.UniqueConstraint(fields=('name',), name='unique_meal'),
-        ),
-        migrations.AddConstraint(
-            model_name='ingredient',
-            constraint=models.UniqueConstraint(fields=('name',), name='unique_ingredient'),
         ),
     ]

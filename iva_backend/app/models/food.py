@@ -9,15 +9,12 @@ class Ingredient(MeasurableItem):
         PER_1_UNIT = 'PER_1_UNIT', 'Per 1 unit'
         PER_100_UNITS = 'PER_100_UNITS', 'Per 100 units'
 
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, unique=True)
     kcal = models.IntegerField()
     kcal_per = models.CharField(
         max_length=13,
         choices=KcalPer.choices,
     )
-
-    class Meta:
-        constraints = [UniqueConstraint(fields=['name'], name='unique_ingredient')]
 
     def __str__(self) -> str:
         return self.name
@@ -30,14 +27,11 @@ class Meal(models.Model):
         DINNER = 'DINNER', 'Dinner'
         SNACK = 'SNACK', 'Snack'
 
-    name = models.CharField(max_length=128)
+    name = models.CharField(max_length=128, unique=True)
     type = models.CharField(
         max_length=9,
         choices=Type.choices,
     )
-
-    class Meta:
-        constraints = [UniqueConstraint(fields=['name'], name='unique_meal')]
 
     def __str__(self) -> str:
         return self.name
