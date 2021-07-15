@@ -7,6 +7,7 @@ from django.utils import timezone
 class ShoppingListManager:
     @staticmethod
     def create_shopping_list() -> ShoppingList:
+        # first we close previous shopping list if there is one
         try:
             prev_shopping_list = ShoppingList.objects.get(closed_at=None)
             prev_shopping_list.closed_at = timezone.now()

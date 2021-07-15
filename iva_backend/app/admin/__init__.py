@@ -1,2 +1,2 @@
 from .food import *
-from .shopping import *
+from .shopping_list import *
