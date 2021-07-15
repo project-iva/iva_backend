@@ -1,7 +1,7 @@
 from rest_framework import viewsets, mixins, status, views
 from rest_framework.response import Response
 
-from iva_backend.app.api.serializers.food_serializer import MealSerializer, MealTrackerEntrySerializer, \
+from iva_backend.app.api.serializers.food import MealSerializer, MealTrackerEntrySerializer, \
     CreateMealTrackerEntrySerializer
 from iva_backend.app.models import Meal, MealTrackerEntry
 

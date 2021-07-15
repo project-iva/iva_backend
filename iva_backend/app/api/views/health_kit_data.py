@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from iva_backend.app.api.filter_backends import LimitFilterBackend
-from iva_backend.app.api.serializers.health_kit_data_serializer import MindfulSessionSerializer, SleepAnalysisSerializer
+from iva_backend.app.api.serializers.health_kit_data import MindfulSessionSerializer, SleepAnalysisSerializer
 from iva_backend.app.models import MindfulSession, SleepAnalysis
 
 
