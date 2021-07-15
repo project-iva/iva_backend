@@ -5,3 +5,4 @@ from .sleep_analysis import SleepAnalysis
 from .food import *
 from .measurable_item import *
 from .shopping_list import *
+from .body_mass import *
