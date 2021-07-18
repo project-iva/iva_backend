@@ -2,6 +2,7 @@ from django.conf.urls import url
 from django.urls import path, include
 from rest_framework_nested import routers
 
+from iva_backend.app.api.views.assets import AssetsView
 from iva_backend.app.api.views.food import MealsViewSet, MealTrackingEntriesViewSet, PossibleMeals
 from iva_backend.app.api.views.health_kit_data import MindfulSessionsViewSet, SleepAnalysesViewSet, BodyMassesViewSet
 from iva_backend.app.api.views.intents import IntentsViewSet
@@ -25,4 +26,5 @@ urlpatterns = [
     path('possible-meals/', PossibleMeals.as_view()),
     path('shopping-list/', ShoppingListView.as_view()),
     path('shopping-list/close/', CloseShoppingListView.as_view()),
+    path('assets/', AssetsView.as_view()),
 ]

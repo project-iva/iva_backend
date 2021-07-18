@@ -23,7 +23,6 @@ def store_asset_prices():
     # using the same datetime makes the grouping easier
     date = timezone.now()
     for asset in Asset.objects.all():
-        print(asset)
         try:
             if asset.type == Asset.Type.STOCK:
                 price = iex_api.get_stock_price(asset.ticker)
