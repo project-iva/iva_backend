@@ -28,7 +28,7 @@ services:
     build:
       context: .
       dockerfile: ./iva_backend/Dockerfile
-    command: celery worker --app=iva_backend --loglevel=info
+    command: celery --app=iva_backend worker -B --loglevel=info
     volumes:
       - .:/usr/src/app/
     environment:

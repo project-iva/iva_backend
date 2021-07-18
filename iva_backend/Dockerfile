@@ -12,7 +12,7 @@ RUN apk update \
     && apk add git gcc python3-dev musl-dev mariadb-dev
 
 # install dependencies
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip setuptools wheel
 RUN pip install pipenv
 COPY Pipfile* ./
 RUN pipenv lock --requirements > /tmp/requirements.txt
