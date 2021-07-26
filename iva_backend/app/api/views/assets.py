@@ -1,3 +1,6 @@
+from itertools import groupby
+
+from django.utils import timezone
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -6,16 +9,12 @@ from iva_backend.app.models import AssetTrackerEntry
 
 
 class AssetsView(APIView):
-    def get(self, request):
-        dates = AssetTrackerEntry.objects.values_list('date', flat=True).order_by().distinct()
-        data = []
-        print('aa')
-        for date in dates:
-            entries = AssetTrackerEntry.objects.filter(date=date)
-            data.append({
-                'date': date,
-                'asset_tracker_entries': entries
-            })
-        serializer = AssetTrackerEntriesGroupedByDateSerializer(data=data, many=True)
+    def get(self, request) -> Response:
+        queryset = AssetTrackerEntry.objects.order_by('-date')
+        result = [{'date': key, 'asset_tracker_entries': list(group)} for key, group in
+                  groupby(queryset,
+                          key=lambda asset_tracker_entry: timezone.localtime(asset_tracker_entry.date))]
+
+        serializer = AssetTrackerEntriesGroupedByDateSerializer(data=result, many=True)
         serializer.is_valid()
         return Response(serializer.data)
