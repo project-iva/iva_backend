@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from rest_framework import serializers
 
 from iva_backend.app.models import Meal, MealIngredient, MealTrackerEntry, CaloriesGoal
@@ -33,3 +34,12 @@ class CreateMealTrackerEntrySerializer(serializers.ModelSerializer):
     class Meta:
         model = MealTrackerEntry
         fields = ['meal']
+
+
+class CaloriesGoalSerializer(serializers.ModelSerializer):
+    calories = serializers.ReadOnlyField(source='todays_calories')
+    entries = MealTrackerEntrySerializer(many=True, read_only=True, source='todays_entries')
+
+    class Meta:
+        model = CaloriesGoal
+        fields = ['calories_goal', 'calories', 'entries']

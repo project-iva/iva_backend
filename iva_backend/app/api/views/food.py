@@ -1,9 +1,10 @@
+from django.http import Http404
 from rest_framework import viewsets, mixins, status, views
 from rest_framework.response import Response
 
 from iva_backend.app.api.serializers.food import MealSerializer, MealTrackerEntrySerializer, \
-    CreateMealTrackerEntrySerializer
-from iva_backend.app.models import Meal, MealTrackerEntry
+    CreateMealTrackerEntrySerializer, CaloriesGoalSerializer
+from iva_backend.app.models import Meal, MealTrackerEntry, CaloriesGoal
 
 
 class MealsViewSet(viewsets.ReadOnlyModelViewSet):
@@ -33,8 +34,19 @@ class MealTrackingEntriesViewSet(mixins.CreateModelMixin,
         return Response(instance_serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class PossibleMeals(views.APIView):
+class PossibleMealsView(views.APIView):
     def get(self, request):
         possible_meals = list(filter(lambda meal: meal.can_be_prepared, Meal.objects.all()))
         meal_serializer = MealSerializer(possible_meals, many=True)
         return Response(meal_serializer.data)
+
+
+class CaloriesGoalView(views.APIView):
+    def get(self, request):
+        try:
+            goal = CaloriesGoal.objects.latest('id')
+        except CaloriesGoal.DoesNotExist:
+            raise Http404('No calories goal has been set')
+
+        calories_goal_serializer = CaloriesGoalSerializer(goal)
+        return Response(calories_goal_serializer.data)

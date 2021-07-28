@@ -1,6 +1,10 @@
 from django.db import models
+from django.db.models import QuerySet
 from django.utils import timezone
+from django.utils.timezone import make_aware
+
 from iva_backend.app.models.measurable_item import MeasurableItem
+import datetime
 
 
 class Ingredient(MeasurableItem):
@@ -74,6 +78,17 @@ class CaloriesGoal(models.Model):
     calories_goal = models.PositiveSmallIntegerField()
     start = models.DateTimeField(default=timezone.now)
     end = models.DateTimeField(null=True, blank=True)
+
+    @property
+    def todays_entries(self) -> QuerySet:
+        today_midnight = timezone.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        tomorrow_midnight = today_midnight + datetime.timedelta(days=1)
+        return self.entries.filter(date__gte=today_midnight, date__lt=tomorrow_midnight)
+
+    @property
+    def todays_calories(self) -> float:
+        kcals = [entry.meal.kcal for entry in self.todays_entries.all()]
+        return sum(kcals)
 
 
 class MealTrackerEntry(models.Model):
