@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from iva_backend.app.models import Meal, MealIngredient, MealTrackerEntry
+from iva_backend.app.models import Meal, MealIngredient, MealTrackerEntry, CaloriesGoal
 
 
 class MealIngredientSerializer(serializers.ModelSerializer):

@@ -70,9 +70,17 @@ class MealIngredient(models.Model):
         return self.ingredient.amount >= self.amount
 
 
+class CaloriesGoal(models.Model):
+    calories_goal = models.PositiveSmallIntegerField()
+    start = models.DateTimeField(default=timezone.now)
+    end = models.DateTimeField(null=True, blank=True)
+
+
 class MealTrackerEntry(models.Model):
     meal = models.ForeignKey(Meal, on_delete=models.PROTECT)
     date = models.DateTimeField(default=timezone.now)
+    calories_goal = models.ForeignKey(CaloriesGoal, related_name='entries', null=True, blank=True,
+                                      on_delete=models.PROTECT)
 
     class Meta:
         verbose_name_plural = 'Meal tracker entries'
