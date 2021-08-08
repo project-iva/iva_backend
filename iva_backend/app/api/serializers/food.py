@@ -1,4 +1,3 @@
-from django.db.models import QuerySet
 from rest_framework import serializers
 
 from iva_backend.app.models import Meal, MealIngredient, MealTrackerEntry, CaloriesGoal
