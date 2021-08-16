@@ -45,5 +45,5 @@ urlpatterns = [
     path('current-day-plan/', CurrentDayPlanView.as_view()),
     url(r'day-plan/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayPlanForDateView.as_view()),
     path('current-day-goals/', CurrentDayGoalsView.as_view()),
-    url(r'day-goals/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayGoalsForDateView.as_view()),
+    url(r'day-goal/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayGoalsForDateView.as_view()),
 ]

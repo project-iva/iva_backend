@@ -20,6 +20,10 @@ class DayPlanActivitiesViewSet(ModelViewSet):
     def get_queryset(self):
         return DayPlanActivity.objects.filter(day_plan=self.kwargs.get('day_plan_pk'))
 
+    def perform_create(self, serializer):
+        day_plan = DayPlan.objects.get(pk=self.kwargs.get('day_plan_pk'))
+        serializer.save(day_plan=day_plan)
+
 
 class CurrentDayPlanView(APIView):
     def get(self, request) -> Response:
@@ -46,6 +50,10 @@ class DayGoalsViewSet(ModelViewSet):
 
     def get_queryset(self):
         return DayGoal.objects.filter(goals_list=self.kwargs.get('goals_list_pk'))
+
+    def perform_create(self, serializer):
+        goals = DayGoals.objects.get(pk=self.kwargs.get('goals_list_pk'))
+        serializer.save(goals_list=goals)
 
 
 class CurrentDayGoalsView(APIView):

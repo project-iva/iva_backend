@@ -6,7 +6,7 @@ from iva_backend.app.models import DayGoals, DayGoal, DayPlanActivity, DayPlan
 class DayGoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = DayGoal
-        fields = ['__all__']
+        exclude = ['goals_list']
 
 
 class DayGoalsSerializer(serializers.ModelSerializer):
@@ -20,7 +20,7 @@ class DayGoalsSerializer(serializers.ModelSerializer):
 class DayPlanActivitySerializer(serializers.ModelSerializer):
     class Meta:
         model = DayPlanActivity
-        fields = ['__all__']
+        exclude = ['day_plan']
 
 
 class DayPlanSerializer(serializers.ModelSerializer):
