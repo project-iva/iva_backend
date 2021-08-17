@@ -38,8 +38,20 @@ class DayPlan(models.Model):
 
 
 class DayPlanActivity(models.Model):
+    class Type(models.TextChoices):
+        MORNING_ROUTINE = 'MORNING_ROUTINE', 'Morning routine'
+        EVENING_ROUTINE = 'EVENING_ROUTINE', 'Evening routine'
+        MEAL = 'MEAL', 'Meal'
+        SCHOOL = 'SCHOOL', 'School'
+        LEISURE = 'LEISURE', 'Leisure'
+        WORKOUT = 'WORKOUT', 'Workout'
+        JOB = 'JOB', 'Job'
+        HOBBY = 'HOBBY', 'Hobby'
+        OTHER = 'OTHER', 'Other'
+
     start_time = models.TimeField()
     end_time = models.TimeField()
     name = models.CharField(max_length=256)
     description = models.TextField()
     day_plan = models.ForeignKey(DayPlan, related_name='activities', on_delete=models.CASCADE)
+    type = models.CharField(max_length=15, choices=Type.choices, default=Type.OTHER)
