@@ -37,7 +37,7 @@ class DayPlan(models.Model):
         return DayPlan.get_day_plan_for_date(timezone.now().date())
 
 
-class DayPlanActivity(models.Model):
+class Activity(models.Model):
     class Type(models.TextChoices):
         MORNING_ROUTINE = 'MORNING_ROUTINE', 'Morning routine'
         EVENING_ROUTINE = 'EVENING_ROUTINE', 'Evening routine'
@@ -53,5 +53,22 @@ class DayPlanActivity(models.Model):
     end_time = models.TimeField()
     name = models.CharField(max_length=256)
     description = models.TextField()
-    day_plan = models.ForeignKey(DayPlan, related_name='activities', on_delete=models.CASCADE)
     type = models.CharField(max_length=15, choices=Type.choices, default=Type.OTHER)
+
+    class Meta:
+        abstract = True
+
+
+class DayPlanActivity(Activity):
+    day_plan = models.ForeignKey(DayPlan, related_name='activities', on_delete=models.CASCADE)
+
+
+class DayPlanTemplate(models.Model):
+    name = models.CharField(max_length=256)
+
+    def __str__(self) -> str:
+        return self.name
+
+
+class DayPlanTemplateActivity(Activity):
+    day_plan_template = models.ForeignKey(DayPlanTemplate, related_name='activities', on_delete=models.CASCADE)

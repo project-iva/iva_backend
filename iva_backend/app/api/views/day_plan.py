@@ -1,12 +1,12 @@
 import datetime
-
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from iva_backend.app.api.serializers.day_plan import DayGoalsSerializer, DayPlanSerializer, DayPlanActivitySerializer, \
-    DayGoalSerializer
-from iva_backend.app.models import DayGoals, DayPlan, DayPlanActivity, DayGoal
+    DayGoalSerializer, DayPlanTemplateSerializer
+from iva_backend.app.models import DayGoals, DayPlan, DayPlanActivity, DayGoal, DayPlanTemplate
 
 
 class DayPlansViewSet(ReadOnlyModelViewSet):
@@ -36,6 +36,30 @@ class DayPlanForDateView(APIView):
     def get(self, request, date_string) -> Response:
         date = datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
         day_plan = DayPlan.get_day_plan_for_date(date)
+        serializer = DayPlanSerializer(day_plan)
+        return Response(serializer.data)
+
+
+class DayPlanTemplatesViewSet(ReadOnlyModelViewSet):
+    queryset = DayPlanTemplate.objects.all()
+    serializer_class = DayPlanTemplateSerializer
+
+
+class DayPlanFromTemplateView(APIView):
+    def post(self, request, day_plan_pk, day_plan_template_pk) -> Response:
+        day_plan = get_object_or_404(DayPlan, pk=day_plan_pk)
+        day_plan_template = get_object_or_404(DayPlanTemplate, pk=day_plan_template_pk)
+
+        for activity in day_plan_template.activities.all():
+            DayPlanActivity.objects.create(
+                start_time=activity.start_time,
+                end_time=activity.end_time,
+                name=activity.name,
+                description=activity.description,
+                type=activity.type,
+                day_plan=day_plan,
+            )
+
         serializer = DayPlanSerializer(day_plan)
         return Response(serializer.data)
 

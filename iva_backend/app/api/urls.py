@@ -4,7 +4,8 @@ from rest_framework_nested import routers
 
 from iva_backend.app.api.views.assets import AssetsView
 from iva_backend.app.api.views.day_plan import CurrentDayPlanView, CurrentDayGoalsView, DayPlanForDateView, \
-    DayGoalsForDateView, DayPlansViewSet, DayGoalsListViewSet, DayPlanActivitiesViewSet, DayGoalsViewSet
+    DayGoalsForDateView, DayPlansViewSet, DayGoalsListViewSet, DayPlanActivitiesViewSet, DayGoalsViewSet, \
+    DayPlanFromTemplateView, DayPlanTemplatesViewSet
 from iva_backend.app.api.views.food import MealsViewSet, MealTrackingEntriesViewSet, PossibleMealsView, CaloriesGoalView
 from iva_backend.app.api.views.health_kit_data import MindfulSessionsViewSet, SleepAnalysesViewSet, BodyMassesViewSet, \
     GroupedSleepAnalysesView, GroupedMindfulSessionsView
@@ -22,6 +23,7 @@ router.register(r'meals', MealsViewSet)
 router.register(r'meal-tracking-entries', MealTrackingEntriesViewSet)
 router.register(r'shopping-list/item', UpdateShoppingListItemView, basename='shopping-list-item')
 router.register(r'day-plans', DayPlansViewSet)
+router.register(r'day-plan-templates', DayPlanTemplatesViewSet)
 router.register(r'day-goals', DayGoalsListViewSet)
 
 day_plans_router = routers.NestedSimpleRouter(router, r'day-plans', lookup='day_plan')
@@ -43,6 +45,8 @@ urlpatterns = [
     path('grouped-mindful-sessions/', GroupedMindfulSessionsView.as_view()),
     path('calories-goal/', CaloriesGoalView.as_view()),
     path('current-day-plan/', CurrentDayPlanView.as_view()),
+    path('day-plan/<int:day_plan_pk>/activities-from-template/<int:day_plan_template_pk>/',
+         DayPlanFromTemplateView.as_view()),
     url(r'day-plan/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayPlanForDateView.as_view()),
     path('current-day-goals/', CurrentDayGoalsView.as_view()),
     url(r'day-goal/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayGoalsForDateView.as_view()),

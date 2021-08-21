@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from iva_backend.app.models import DayGoals, DayGoal, DayPlanActivity, DayPlan
+from iva_backend.app.models import DayGoals, DayGoal, DayPlanActivity, DayPlan, DayPlanTemplateActivity, DayPlanTemplate
 
 
 class DayGoalSerializer(serializers.ModelSerializer):
@@ -29,3 +29,17 @@ class DayPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = DayPlan
         fields = ['id', 'date', 'activities']
+
+
+class DayPlanTemplateActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DayPlanTemplateActivity
+        exclude = ['day_plan_template']
+
+
+class DayPlanTemplateSerializer(serializers.ModelSerializer):
+    activities = DayPlanTemplateActivitySerializer(many=True)
+
+    class Meta:
+        model = DayPlanTemplate
+        fields = ['id', 'name', 'activities']
