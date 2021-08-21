@@ -5,8 +5,8 @@ from requests.exceptions import ConnectionError
 
 class IvaService:
     @staticmethod
-    def send_mindful_session_created_notification():
-        url = settings.IVA_URL + '/mindful_session_recorded'
+    def send_day_plan_changed_notification():
+        url = settings.IVA_URL + '/day-plan-changed/'
         try:
             requests.post(url)
         except ConnectionError:
