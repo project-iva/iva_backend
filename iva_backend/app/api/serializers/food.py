@@ -17,8 +17,8 @@ class MealSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Meal
-        fields = ['id', 'name', 'type', 'kcal', 'ingredients']
-        read_only_fields = ['kcal']
+        fields = ['id', 'name', 'type', 'kcal', 'protein', 'fat', 'carbs', 'ingredients']
+        read_only_fields = ['kcal', 'protein', 'fat', 'carbs']
 
 
 class MealTrackerEntrySerializer(serializers.ModelSerializer):

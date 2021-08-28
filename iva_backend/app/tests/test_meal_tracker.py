@@ -8,7 +8,7 @@ class MealTrackerTestCase(TestCase):
         self.ingredient_1 = Ingredient.objects.create(
             name='Ingredient 1',
             kcal=1,
-            kcal_per=Ingredient.KcalPer.PER_100_UNITS,
+            nutrition_per=Ingredient.NutritionPer.PER_100_UNITS,
             amount=self.ingredient_1_original_amount,
             unit=MeasurableItem.Unit.MG
         )
@@ -17,7 +17,7 @@ class MealTrackerTestCase(TestCase):
         self.ingredient_2 = Ingredient.objects.create(
             name='Ingredient 2',
             kcal=1,
-            kcal_per=Ingredient.KcalPer.PER_100_UNITS,
+            nutrition_per=Ingredient.NutritionPer.PER_100_UNITS,
             amount=self.ingredient_2_original_amount,
             unit=MeasurableItem.Unit.MG
         )

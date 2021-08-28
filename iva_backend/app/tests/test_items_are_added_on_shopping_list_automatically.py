@@ -9,7 +9,8 @@ class ItemsAreAddedOnShoppingListAutomaticallyTestCase(TestCase):
         self.check_items_are_added_on_shopping_list_automatically(item)
 
     def test_ingredients_are_added_on_shopping_list_automatically(self):
-        item = Ingredient.objects.create(name='item', amount=100, unit=MeasurableItem.Unit.PACKAGE, kcal=1, kcal_per=Ingredient.KcalPer.PER_100_UNITS)
+        item = Ingredient.objects.create(name='item', amount=100, unit=MeasurableItem.Unit.PACKAGE, kcal=1,
+                                         nutrition_per=Ingredient.NutritionPer.PER_100_UNITS)
         self.check_items_are_added_on_shopping_list_automatically(item)
 
     def check_items_are_added_on_shopping_list_automatically(self, item: MeasurableItem):

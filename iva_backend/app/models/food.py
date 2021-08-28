@@ -1,21 +1,24 @@
 from django.db import models
 from django.db.models import QuerySet
 from django.utils import timezone
-from django.utils.timezone import make_aware
 
 from iva_backend.app.models.measurable_item import MeasurableItem
 import datetime
 
 
 class Ingredient(MeasurableItem):
-    class KcalPer(models.TextChoices):
+    class NutritionPer(models.TextChoices):
         PER_1_UNIT = 'PER_1_UNIT', 'Per 1 unit'
         PER_100_UNITS = 'PER_100_UNITS', 'Per 100 units'
 
     kcal = models.IntegerField()
-    kcal_per = models.CharField(
+    protein = models.FloatField(default=0.0)
+    fat = models.FloatField(default=0.0)
+    carbs = models.FloatField(default=0.0)
+
+    nutrition_per = models.CharField(
         max_length=13,
-        choices=KcalPer.choices,
+        choices=NutritionPer.choices,
     )
 
     def __str__(self) -> str:
@@ -47,6 +50,30 @@ class Meal(models.Model):
         return kcal_sum
 
     @property
+    def protein(self) -> float:
+        protein_sum = 0.0
+        for ingredient in self.ingredients.all():
+            protein_sum += ingredient.protein
+
+        return protein_sum
+
+    @property
+    def fat(self) -> float:
+        fat_sum = 0.0
+        for ingredient in self.ingredients.all():
+            fat_sum += ingredient.fat
+
+        return fat_sum
+
+    @property
+    def carbs(self) -> float:
+        carbs_sum = 0.0
+        for ingredient in self.ingredients.all():
+            carbs_sum += ingredient.carbs
+
+        return carbs_sum
+
+    @property
     def can_be_prepared(self) -> bool:
         """
         Checks if the meal can be prepared with the currently available ingredients
@@ -63,11 +90,27 @@ class MealIngredient(models.Model):
     amount = models.FloatField()
 
     @property
-    def kcal(self) -> float:
-        if self.ingredient.kcal_per == Ingredient.KcalPer.PER_100_UNITS:
-            return (self.amount / 100) * self.ingredient.kcal
+    def ingredient_nutrition_multiplier(self) -> float:
+        if self.ingredient.nutrition_per == Ingredient.NutritionPer.PER_100_UNITS:
+            return self.amount / 100
 
-        return self.amount * self.ingredient.kcal
+        return self.amount
+
+    @property
+    def kcal(self) -> float:
+        return self.ingredient_nutrition_multiplier * self.ingredient.kcal
+
+    @property
+    def protein(self) -> float:
+        return self.ingredient_nutrition_multiplier * self.ingredient.protein
+
+    @property
+    def fat(self) -> float:
+        return self.ingredient_nutrition_multiplier * self.ingredient.fat
+
+    @property
+    def carbs(self) -> float:
+        return self.ingredient_nutrition_multiplier * self.ingredient.carbs
 
     @property
     def is_available(self) -> bool:
