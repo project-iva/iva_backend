@@ -2,7 +2,7 @@ from django.conf.urls import url
 from django.urls import path, include
 from rest_framework_nested import routers
 
-from iva_backend.app.api.views.assets import AssetsView
+from iva_backend.app.api.views.assets import AssetTrackerEntriesView, AssetsDayPriceChangeView
 from iva_backend.app.api.views.day_plan import CurrentDayPlanView, CurrentDayGoalsView, DayPlanForDateView, \
     DayGoalsForDateView, DayPlansViewSet, DayGoalsListViewSet, DayPlanActivitiesViewSet, DayGoalsViewSet, \
     DayPlanFromTemplateView, DayPlanTemplatesViewSet
@@ -40,7 +40,8 @@ urlpatterns = [
     path('possible-meals/', PossibleMealsView.as_view()),
     path('shopping-list/', ShoppingListView.as_view()),
     path('shopping-list/close/', CloseShoppingListView.as_view()),
-    path('assets/', AssetsView.as_view()),
+    path('asset-tracker-entries/', AssetTrackerEntriesView.as_view()),
+    path('assets-day-price-change/', AssetsDayPriceChangeView.as_view()),
     path('grouped-sleep-analyses/', GroupedSleepAnalysesView.as_view()),
     path('grouped-mindful-sessions/', GroupedMindfulSessionsView.as_view()),
     path('calories-goal/', CaloriesGoalView.as_view()),

@@ -10,13 +10,24 @@ class AssetSerializer(serializers.ModelSerializer):
 
 
 class AssetTrackerEntrySerializer(serializers.ModelSerializer):
-    asset = AssetSerializer(read_only=True)
-
     class Meta:
         model = AssetTrackerEntry
-        fields = ['value', 'market_price', 'asset']
+        fields = ['value', 'market_price']
+
+
+class AssetTrackerEntryWithAssetSerializer(AssetTrackerEntrySerializer):
+    asset = AssetSerializer(read_only=True)
+
+    class Meta(AssetTrackerEntrySerializer.Meta):
+        fields = AssetTrackerEntrySerializer.Meta.fields + ['asset']
 
 
 class AssetTrackerEntriesGroupedByDateSerializer(serializers.Serializer):
-    asset_tracker_entries = AssetTrackerEntrySerializer(many=True)
+    asset_tracker_entries = AssetTrackerEntryWithAssetSerializer(many=True)
     date = serializers.DateTimeField()
+
+
+class AssetDayPriceChangeSerializer(serializers.Serializer):
+    asset = AssetSerializer()
+    last_entry = AssetTrackerEntrySerializer()
+    prev_day_last_entry = AssetTrackerEntrySerializer()
