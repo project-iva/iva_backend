@@ -41,7 +41,7 @@ class AssetsDayPriceChangeView(APIView):
                 'last_entry': last_entry,
                 'prev_day_last_entry': prev_day_last_entry
             })
-        print(results)
+
         serializer = AssetDayPriceChangeSerializer(data=results, many=True)
         serializer.is_valid()
         return Response(serializer.data)
