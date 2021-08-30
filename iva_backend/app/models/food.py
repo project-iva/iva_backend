@@ -130,8 +130,19 @@ class CaloriesGoal(models.Model):
 
     @property
     def todays_calories(self) -> float:
-        kcals = [entry.meal.kcal for entry in self.todays_entries.all()]
-        return sum(kcals)
+        return sum([entry.meal.kcal for entry in self.todays_entries.all()])
+
+    @property
+    def todays_protein(self) -> float:
+        return sum([entry.meal.protein for entry in self.todays_entries.all()])
+
+    @property
+    def todays_fat(self) -> float:
+        return sum([entry.meal.fat for entry in self.todays_entries.all()])
+
+    @property
+    def todays_carbs(self) -> float:
+        return sum([entry.meal.carbs for entry in self.todays_entries.all()])
 
 
 class MealTrackerEntry(models.Model):
