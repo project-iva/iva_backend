@@ -30,3 +30,11 @@ class BodyMassSerializer(serializers.ModelSerializer):
     class Meta:
         model = BodyMass
         fields = ['uuid', 'start', 'value']
+
+
+class BodyMassStatsSerializer(serializers.Serializer):
+    latest_measurement = serializers.FloatField()
+    week_average = serializers.FloatField()
+    prev_week_average = serializers.FloatField()
+    month_average = serializers.FloatField()
+    prev_month_average = serializers.FloatField()
