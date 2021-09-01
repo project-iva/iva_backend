@@ -45,6 +45,7 @@ urlpatterns = [
     path('assets-day-price-change/', AssetsDayPriceChangeView.as_view()),
     path('grouped-sleep-analyses/', GroupedSleepAnalysesView.as_view()),
     path('week-sleep-stats/', WeekSleepStatsView.as_view()),
+    path('week-mindful-sessions-stats/', WeekSleepStatsView.as_view()),
     path('grouped-mindful-sessions/', GroupedMindfulSessionsView.as_view()),
     path('calories-goal/', CaloriesGoalView.as_view()),
     path('current-day-plan/', CurrentDayPlanView.as_view()),

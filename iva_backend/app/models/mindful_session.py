@@ -9,5 +9,9 @@ class MindfulSession(models.Model):
     end = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def duration_in_secs(self) -> float:
+        return (self.end - self.start).total_seconds()
+
     class Meta:
         ordering = ('-created_at',)

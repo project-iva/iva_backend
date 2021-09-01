@@ -8,21 +8,32 @@ class MindfulSessionSerializer(serializers.ModelSerializer):
         exclude = ['created_at']
 
 
+class ReadOnlyMindfulSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MindfulSession
+        fields = ['start', 'end', 'duration_in_secs']
+        read_only_fields = ['start', 'end', 'duration_in_secs']
+
+
 class GroupedMindfulSessionSerializer(serializers.Serializer):
     date = serializers.DateTimeField()
-    mindful_sessions = MindfulSessionSerializer(many=True)
+    mindful_sessions = ReadOnlyMindfulSessionSerializer(many=True)
 
 
 class SleepAnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = SleepAnalysis
-        fields = ['start', 'end', 'value', 'duration_in_secs']
-        read_only_fields = ['duration_in_secs']
+        exclude = ['created_at']
 
+class ReadOnlySleepAnalysisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SleepAnalysis
+        fields = ['start', 'end', 'value', 'duration_in_secs']
+        read_only_fields = ['start', 'end', 'value', 'duration_in_secs']
 
 class GroupedSleepAnalysisSerializer(serializers.Serializer):
     date = serializers.DateField()
-    sleep_analyses = SleepAnalysisSerializer(many=True)
+    sleep_analyses = ReadOnlySleepAnalysisSerializer(many=True)
 
 
 class BodyMassSerializer(serializers.ModelSerializer):

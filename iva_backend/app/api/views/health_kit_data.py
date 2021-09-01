@@ -31,6 +31,27 @@ class GroupedMindfulSessionsView(APIView):
         return Response(serializer.data)
 
 
+class WeekMindfulSessionsStatsView(APIView):
+    def get(self, request) -> Response:
+        data = []
+        today = timezone.now()
+        for offset in range(7):
+            day_date = today - timedelta(offset)
+            day_qs = MindfulSession.objects.filter(
+                end__year=day_date.year,
+                end__month=day_date.month,
+                end__day=day_date.day
+            )
+            data.append({
+                'date': day_date.date(),
+                'mindful_sessions': list(day_qs.all())
+            })
+
+        serializer = GroupedMindfulSessionSerializer(data=data, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
+
 class SleepAnalysesViewSet(viewsets.ModelViewSet):
     queryset = SleepAnalysis.objects.all()
     serializer_class = SleepAnalysisSerializer
