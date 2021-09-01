@@ -48,6 +48,28 @@ class GroupedSleepAnalysesView(APIView):
         return Response(serializer.data)
 
 
+class WeekSleepStatsView(APIView):
+    def get(self, request) -> Response:
+        data = []
+        today = timezone.now()
+        for offset in range(7):
+            day_date = today - timedelta(offset)
+            day_qs = SleepAnalysis.objects.filter(
+                value=SleepAnalysis.ValueSleepAnalysis.ASLEEP,
+                end__year=day_date.year,
+                end__month=day_date.month,
+                end__day=day_date.day
+            )
+            data.append({
+                'date': day_date.date(),
+                'sleep_analyses': list(day_qs.all())
+            })
+
+        serializer = GroupedSleepAnalysisSerializer(data=data, many=True)
+        serializer.is_valid()
+        return Response(serializer.data)
+
+
 class BodyMassesViewSet(viewsets.ModelViewSet):
     queryset = BodyMass.objects.all()
     serializer_class = BodyMassSerializer

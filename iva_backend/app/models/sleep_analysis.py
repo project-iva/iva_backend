@@ -15,5 +15,9 @@ class SleepAnalysis(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     value = models.IntegerField(choices=ValueSleepAnalysis.choices)
 
+    @property
+    def duration_in_secs(self) -> float:
+        return (self.end - self.start).total_seconds()
+
     class Meta:
         ordering = ('-created_at',)

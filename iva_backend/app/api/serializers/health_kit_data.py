@@ -16,11 +16,12 @@ class GroupedMindfulSessionSerializer(serializers.Serializer):
 class SleepAnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = SleepAnalysis
-        exclude = ['created_at']
+        fields = ['start', 'end', 'value', 'duration_in_secs']
+        read_only_fields = ['duration_in_secs']
 
 
 class GroupedSleepAnalysisSerializer(serializers.Serializer):
-    date = serializers.DateTimeField()
+    date = serializers.DateField()
     sleep_analyses = SleepAnalysisSerializer(many=True)
 
 

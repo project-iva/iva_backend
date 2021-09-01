@@ -8,7 +8,7 @@ from iva_backend.app.api.views.day_plan import CurrentDayPlanView, CurrentDayGoa
     DayPlanFromTemplateView, DayPlanTemplatesViewSet
 from iva_backend.app.api.views.food import MealsViewSet, MealTrackingEntriesViewSet, PossibleMealsView, CaloriesGoalView
 from iva_backend.app.api.views.health_kit_data import MindfulSessionsViewSet, SleepAnalysesViewSet, BodyMassesViewSet, \
-    GroupedSleepAnalysesView, GroupedMindfulSessionsView, BodyMassStatsView
+    GroupedSleepAnalysesView, GroupedMindfulSessionsView, BodyMassStatsView, WeekSleepStatsView
 from iva_backend.app.api.views.intents import IntentsViewSet
 from iva_backend.app.api.views.shopping_list import ShoppingListView, CloseShoppingListView, UpdateShoppingListItemView
 from iva_backend.app.api.views.training_instances import TrainingInstancesViewSet, TrainingInstancesExportView
@@ -44,6 +44,7 @@ urlpatterns = [
     path('asset-tracker-entries/', AssetTrackerEntriesView.as_view()),
     path('assets-day-price-change/', AssetsDayPriceChangeView.as_view()),
     path('grouped-sleep-analyses/', GroupedSleepAnalysesView.as_view()),
+    path('week-sleep-stats/', WeekSleepStatsView.as_view()),
     path('grouped-mindful-sessions/', GroupedMindfulSessionsView.as_view()),
     path('calories-goal/', CaloriesGoalView.as_view()),
     path('current-day-plan/', CurrentDayPlanView.as_view()),
