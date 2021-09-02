@@ -16,7 +16,7 @@ class ReadOnlyMindfulSessionSerializer(serializers.ModelSerializer):
 
 
 class GroupedMindfulSessionSerializer(serializers.Serializer):
-    date = serializers.DateTimeField()
+    date = serializers.DateField()
     mindful_sessions = ReadOnlyMindfulSessionSerializer(many=True)
 
 

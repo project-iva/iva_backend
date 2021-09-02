@@ -38,9 +38,7 @@ class WeekMindfulSessionsStatsView(APIView):
         for offset in range(7):
             day_date = today - timedelta(offset)
             day_qs = MindfulSession.objects.filter(
-                end__year=day_date.year,
-                end__month=day_date.month,
-                end__day=day_date.day
+                end__date=day_date.date()
             )
             data.append({
                 'date': day_date.date(),
@@ -77,9 +75,7 @@ class WeekSleepStatsView(APIView):
             day_date = today - timedelta(offset)
             day_qs = SleepAnalysis.objects.filter(
                 value=SleepAnalysis.ValueSleepAnalysis.ASLEEP,
-                end__year=day_date.year,
-                end__month=day_date.month,
-                end__day=day_date.day
+                end__date=day_date.date()
             )
             data.append({
                 'date': day_date.date(),
