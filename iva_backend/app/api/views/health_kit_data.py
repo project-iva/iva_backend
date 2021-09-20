@@ -95,7 +95,7 @@ class BodyMassesViewSet(viewsets.ModelViewSet):
 
 class BodyMassStatsView(APIView):
     def get(self, request) -> Response:
-        latest_body_mass_measurement = BodyMass.objects.last()
+        latest_body_mass_measurement = BodyMass.objects.first()
         latest_measurement = latest_body_mass_measurement.value if latest_body_mass_measurement else None
 
         today = timezone.now()
