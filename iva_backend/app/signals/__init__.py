@@ -1,3 +1,3 @@
 from .food import *
 from .shopping_list import *
-from .day_plan import *
+from .iva_data_updated_notifications import *
