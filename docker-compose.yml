@@ -67,8 +67,7 @@ services:
       - backend
 
   db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    image: linuxserver/mariadb:arm32v7-latest
     volumes:
     - dbdata:/var/lib/mysql
     environment:
