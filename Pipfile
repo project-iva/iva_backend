@@ -18,6 +18,7 @@ redis = "*"
 django-cors-headers = "*"
 requests = "*"
 django-polymorphic = "*"
+forex-python = "*"
 
 [requires]
 python_version = "3.9"

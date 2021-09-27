@@ -1,5 +1,6 @@
 import requests
 from requests import HTTPError
+from forex_python.converter import CurrencyRates
 
 
 class IEXCloudAPIError(Exception):
@@ -10,6 +11,7 @@ class IEXCloudAPI:
     def __init__(self, token: str):
         self.token = token
         self.base_url = 'https://cloud.iexapis.com/stable'
+        self.currency_converter = CurrencyRates()
 
     def append_token(self, endpoint: str) -> str:
         return f"{endpoint}?token={self.token}"
@@ -21,8 +23,17 @@ class IEXCloudAPI:
         try:
             response = requests.get(url)
             response.raise_for_status()
-            price = float(response.json()['latestPrice'])
-            return price
+            json_response = response.json()
+            latest_price = float(json_response['latestPrice'])
+            currency = json_response['currency']
+
+            if currency == 'EUR':
+                price = latest_price
+            elif currency == 'USD':
+                price = self.currency_converter.convert('USD', 'EUR', latest_price)
+            else:
+                raise IEXCloudAPIError
+            return round(price, 2)
         except (HTTPError, KeyError):
             raise IEXCloudAPIError
 
