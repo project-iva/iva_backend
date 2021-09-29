@@ -8,7 +8,7 @@ class SleepAnalysis(models.Model):
         ASLEEP = 1
         AWAKE = 2
 
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    uuid = models.UUIDField(primary_key=True)
     source_name = models.CharField(max_length=128)
     start = models.DateTimeField()
     end = models.DateTimeField()

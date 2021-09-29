@@ -3,7 +3,7 @@ import uuid
 
 
 class BodyMass(models.Model):
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    uuid = models.UUIDField(primary_key=True)
     value = models.FloatField()
     recorded_at = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
