@@ -6,7 +6,7 @@ NOW=$(date +"%F")
 NOWT=$(date +"%T")
 
 ## Backup path ##
-BAK="~/iva/iva_backend_backups/$NOW"
+BAK="$HOME/iva/iva_backend_backups/$NOW"
 
 
 MUSER="root"
