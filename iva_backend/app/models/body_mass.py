@@ -1,12 +1,12 @@
 from django.db import models
-import uuid
+from django.utils import timezone
 
 
 class BodyMass(models.Model):
     uuid = models.UUIDField(primary_key=True)
     value = models.FloatField()
     recorded_at = models.DateTimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         ordering = ('-created_at',)
