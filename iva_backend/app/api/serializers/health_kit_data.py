@@ -25,11 +25,13 @@ class SleepAnalysisSerializer(serializers.ModelSerializer):
         model = SleepAnalysis
         exclude = ['created_at']
 
+
 class ReadOnlySleepAnalysisSerializer(serializers.ModelSerializer):
     class Meta:
         model = SleepAnalysis
         fields = ['start', 'end', 'value', 'duration_in_secs']
         read_only_fields = ['start', 'end', 'value', 'duration_in_secs']
+
 
 class GroupedSleepAnalysisSerializer(serializers.Serializer):
     date = serializers.DateField()

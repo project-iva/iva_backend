@@ -1,4 +1,4 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 from django.utils import timezone
 
@@ -7,6 +7,7 @@ from iva_backend.app.models import DayPlanActivity, DayGoal, CaloriesGoal, MealT
     MindfulSession
 
 
+@receiver(post_delete, sender=DayPlanActivity)
 @receiver(post_save, sender=DayPlanActivity)
 def notify_iva_about_day_plan_update(sender, instance, **kwargs):
     # send notification only if the current day plan has been updated
@@ -14,6 +15,7 @@ def notify_iva_about_day_plan_update(sender, instance, **kwargs):
         IvaService.send_data_updated_notification(IvaService.DataUpdatedType.DAY_PLAN)
 
 
+@receiver(post_delete, sender=DayGoal)
 @receiver(post_save, sender=DayGoal)
 def notify_iva_about_day_goal_update(sender, instance, **kwargs):
     # send notification only if the day goal is from today's list

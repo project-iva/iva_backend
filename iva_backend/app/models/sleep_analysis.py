@@ -1,5 +1,5 @@
 from django.db import models
-import uuid
+from django.utils import timezone
 
 
 class SleepAnalysis(models.Model):
@@ -8,11 +8,11 @@ class SleepAnalysis(models.Model):
         ASLEEP = 1
         AWAKE = 2
 
-    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    uuid = models.UUIDField(primary_key=True)
     source_name = models.CharField(max_length=128)
     start = models.DateTimeField()
     end = models.DateTimeField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)
     value = models.IntegerField(choices=ValueSleepAnalysis.choices)
 
     @property
