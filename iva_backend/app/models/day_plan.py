@@ -27,6 +27,9 @@ class DayGoal(models.Model):
 class DayPlan(models.Model):
     date = models.DateField(unique=True)
 
+    def __str__(self):
+        return self.date.strftime("%d/%m/%Y")
+
     @staticmethod
     def get_day_plan_for_date(day_plan_date: datetime.date) -> DayPlan:
         day_plan, _ = DayPlan.objects.get_or_create(date=day_plan_date)
@@ -60,6 +63,9 @@ class Activity(models.Model):
 
 
 class DayPlanActivity(Activity):
+    started_at = models.TimeField(blank=True, null=True, default=None)
+    ended_at = models.TimeField(blank=True, null=True, default=None)
+    skipped = models.BooleanField(default=False)
     day_plan = models.ForeignKey(DayPlan, related_name='activities', on_delete=models.CASCADE)
 
 
