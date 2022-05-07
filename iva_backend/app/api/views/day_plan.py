@@ -1,8 +1,10 @@
 import datetime
+
+from rest_framework import mixins
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from iva_backend.app.api.serializers.day_plan import DayGoalsSerializer, DayPlanSerializer, DayPlanActivitySerializer, \
     DayGoalSerializer, DayPlanTemplateSerializer
@@ -40,7 +42,10 @@ class DayPlanForDateView(APIView):
         return Response(serializer.data)
 
 
-class DayPlanTemplatesViewSet(ReadOnlyModelViewSet):
+class DayPlanTemplatesViewSet(mixins.CreateModelMixin,
+                              mixins.UpdateModelMixin,
+                              mixins.ListModelMixin,
+                              GenericViewSet):
     queryset = DayPlanTemplate.objects.all()
     serializer_class = DayPlanTemplateSerializer
 
