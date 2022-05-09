@@ -5,7 +5,7 @@ from rest_framework_nested import routers
 from iva_backend.app.api.views.assets import AssetTrackerEntriesView, AssetsDayPriceChangeView
 from iva_backend.app.api.views.day_plan import CurrentDayPlanView, CurrentDayGoalsView, DayPlanForDateView, \
     DayGoalsForDateView, DayPlansViewSet, DayGoalsListViewSet, DayPlanActivitiesViewSet, DayGoalsViewSet, \
-    DayPlanFromTemplateView, DayPlanTemplatesViewSet
+    DayPlanFromTemplateView, DayPlanTemplatesViewSet, DayPlanTemplateActivitiesViewSet
 from iva_backend.app.api.views.food import MealsViewSet, MealTrackingEntriesViewSet, PossibleMealsView, CaloriesGoalView
 from iva_backend.app.api.views.health_kit_data import MindfulSessionsViewSet, SleepAnalysesViewSet, BodyMassesViewSet, \
     GroupedSleepAnalysesView, GroupedMindfulSessionsView, BodyMassStatsView, WeekSleepStatsView, \
@@ -29,6 +29,10 @@ router.register(r'day-goals', DayGoalsListViewSet)
 
 day_plans_router = routers.NestedSimpleRouter(router, r'day-plans', lookup='day_plan')
 day_plans_router.register(r'activities', DayPlanActivitiesViewSet, basename='day-plan-activities')
+
+day_plans_router = routers.NestedSimpleRouter(router, r'day-plan-templates', lookup='day_plan_template')
+day_plans_router.register(r'activities', DayPlanTemplateActivitiesViewSet, basename='day-plan-template-activities')
+
 
 day_goals_router = routers.NestedSimpleRouter(router, r'day-goals', lookup='goals_list')
 day_goals_router.register(r'goals', DayGoalsViewSet, basename='day-goals')
