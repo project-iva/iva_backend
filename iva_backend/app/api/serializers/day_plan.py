@@ -50,3 +50,11 @@ class DayPlanTemplateSerializer(serializers.ModelSerializer):
     class Meta:
         model = DayPlanTemplate
         fields = ['id', 'name', 'activities']
+
+
+class PatchDayPlanTemplateSerializer(serializers.ModelSerializer):
+    activities = DayPlanTemplateActivitySerializer(many=True, read_only=True)
+
+    class Meta:
+        model = DayPlanTemplate
+        fields = ['id', 'name', 'activities']

@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
 
 from iva_backend.app.api.serializers.day_plan import DayGoalsSerializer, DayPlanSerializer, DayPlanActivitySerializer, \
-    DayGoalSerializer, DayPlanTemplateSerializer, DayPlanTemplateActivitySerializer
-from iva_backend.app.models import DayGoals, DayPlan, DayPlanActivity, DayGoal, DayPlanTemplate
+    DayGoalSerializer, DayPlanTemplateSerializer, DayPlanTemplateActivitySerializer, PatchDayPlanTemplateSerializer
+from iva_backend.app.models import DayGoals, DayPlan, DayPlanActivity, DayGoal, DayPlanTemplate, DayPlanTemplateActivity
 
 
 class DayPlansViewSet(ReadOnlyModelViewSet):
@@ -47,14 +47,19 @@ class DayPlanTemplatesViewSet(mixins.CreateModelMixin,
                               mixins.ListModelMixin,
                               GenericViewSet):
     queryset = DayPlanTemplate.objects.all()
-    serializer_class = DayPlanTemplateSerializer
+
+    def get_serializer_class(self):
+        if self.action == 'partial_update':
+            return PatchDayPlanTemplateSerializer
+
+        return DayPlanTemplateSerializer
 
 
 class DayPlanTemplateActivitiesViewSet(ModelViewSet):
     serializer_class = DayPlanTemplateActivitySerializer
 
     def get_queryset(self):
-        return DayPlanActivity.objects.filter(day_plan=self.kwargs.get('day_plan_template_pk'))
+        return DayPlanTemplateActivity.objects.filter(day_plan_template=self.kwargs.get('day_plan_template_pk'))
 
     def perform_create(self, serializer):
         day_plan_template = DayPlanTemplate.objects.get(pk=self.kwargs.get('day_plan_template_pk'))
