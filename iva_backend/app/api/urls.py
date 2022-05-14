@@ -30,8 +30,8 @@ router.register(r'day-goals', DayGoalsListViewSet)
 day_plans_router = routers.NestedSimpleRouter(router, r'day-plans', lookup='day_plan')
 day_plans_router.register(r'activities', DayPlanActivitiesViewSet, basename='day-plan-activities')
 
-day_plans_router = routers.NestedSimpleRouter(router, r'day-plan-templates', lookup='day_plan_template')
-day_plans_router.register(r'activities', DayPlanTemplateActivitiesViewSet, basename='day-plan-template-activities')
+day_plan_template_router = routers.NestedSimpleRouter(router, r'day-plan-templates', lookup='day_plan_template')
+day_plan_template_router.register(r'activities', DayPlanTemplateActivitiesViewSet, basename='day-plan-template-activities')
 
 
 day_goals_router = routers.NestedSimpleRouter(router, r'day-goals', lookup='goals_list')
@@ -40,6 +40,7 @@ day_goals_router.register(r'goals', DayGoalsViewSet, basename='day-goals')
 urlpatterns = [
     url(r'^', include(router.urls)),
     url(r'^', include(day_plans_router.urls)),
+    url(r'^', include(day_plan_template_router.urls)),
     url(r'^', include(day_goals_router.urls)),
     path('export-training-instances/', TrainingInstancesExportView.as_view()),
     path('possible-meals/', PossibleMealsView.as_view()),
