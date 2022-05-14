@@ -60,6 +60,7 @@ class Activity(models.Model):
 
     class Meta:
         abstract = True
+        ordering = ['start_time']
 
 
 class DayPlanActivity(Activity):
