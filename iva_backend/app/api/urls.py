@@ -31,8 +31,8 @@ day_plans_router = routers.NestedSimpleRouter(router, r'day-plans', lookup='day_
 day_plans_router.register(r'activities', DayPlanActivitiesViewSet, basename='day-plan-activities')
 
 day_plan_template_router = routers.NestedSimpleRouter(router, r'day-plan-templates', lookup='day_plan_template')
-day_plan_template_router.register(r'activities', DayPlanTemplateActivitiesViewSet, basename='day-plan-template-activities')
-
+day_plan_template_router.register(r'activities', DayPlanTemplateActivitiesViewSet,
+                                  basename='day-plan-template-activities')
 
 day_goals_router = routers.NestedSimpleRouter(router, r'day-goals', lookup='goals_list')
 day_goals_router.register(r'goals', DayGoalsViewSet, basename='day-goals')
