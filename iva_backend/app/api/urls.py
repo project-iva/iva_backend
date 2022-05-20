@@ -1,5 +1,4 @@
-from django.conf.urls import url
-from django.urls import path, include
+from django.urls import path, include, re_path
 from rest_framework_nested import routers
 
 from iva_backend.app.api.views.assets import AssetTrackerEntriesView, AssetsDayPriceChangeView
@@ -38,10 +37,10 @@ day_goals_router = routers.NestedSimpleRouter(router, r'day-goals', lookup='goal
 day_goals_router.register(r'goals', DayGoalsViewSet, basename='day-goals')
 
 urlpatterns = [
-    url(r'^', include(router.urls)),
-    url(r'^', include(day_plans_router.urls)),
-    url(r'^', include(day_plan_template_router.urls)),
-    url(r'^', include(day_goals_router.urls)),
+    re_path(r'^', include(router.urls)),
+    re_path(r'^', include(day_plans_router.urls)),
+    re_path(r'^', include(day_plan_template_router.urls)),
+    re_path(r'^', include(day_goals_router.urls)),
     path('export-training-instances/', TrainingInstancesExportView.as_view()),
     path('possible-meals/', PossibleMealsView.as_view()),
     path('body-mass-stats/', BodyMassStatsView.as_view()),
@@ -57,7 +56,7 @@ urlpatterns = [
     path('current-day-plan/', CurrentDayPlanView.as_view()),
     path('day-plan/<int:day_plan_pk>/activities-from-template/<int:day_plan_template_pk>/',
          DayPlanFromTemplateView.as_view()),
-    url(r'day-plan/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayPlanForDateView.as_view()),
+    re_path(r'day-plan/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayPlanForDateView.as_view()),
     path('current-day-goals/', CurrentDayGoalsView.as_view()),
-    url(r'day-goal/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayGoalsForDateView.as_view()),
+    re_path(r'day-goal/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayGoalsForDateView.as_view()),
 ]

@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_add_training_instance_model'),
+        ('app', '0002_add_intent_and_training_instance_model'),
     ]
 
     operations = [

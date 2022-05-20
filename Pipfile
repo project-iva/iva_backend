@@ -19,6 +19,7 @@ django-cors-headers = "*"
 requests = "*"
 django-polymorphic = "*"
 forex-python = "*"
+django-oauth-toolkit = "*"
 
 [requires]
 python_version = "3.9"
