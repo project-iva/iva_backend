@@ -40,6 +40,21 @@ class DayPlanTemplateActivitySerializer(serializers.ModelSerializer):
 class DayPlanTemplateSerializer(serializers.ModelSerializer):
     activities = DayPlanTemplateActivitySerializer(many=True)
 
+    def create(self, validated_data):
+        activities = validated_data.pop('activities')
+        day_plan_template = DayPlanTemplate.objects.create(**validated_data)
+        for activity in activities:
+            DayPlanTemplateActivity.objects.create(day_plan_template=day_plan_template, **activity)
+        return day_plan_template
+
+    class Meta:
+        model = DayPlanTemplate
+        fields = ['id', 'name', 'activities']
+
+
+class PatchDayPlanTemplateSerializer(serializers.ModelSerializer):
+    activities = DayPlanTemplateActivitySerializer(many=True, read_only=True)
+
     class Meta:
         model = DayPlanTemplate
         fields = ['id', 'name', 'activities']
