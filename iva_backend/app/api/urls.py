@@ -1,7 +1,9 @@
 from django.urls import path, include, re_path
+from oauth2_provider.urls import base_urlpatterns, app_name
 from rest_framework_nested import routers
 
 from iva_backend.app.api.views.assets import AssetTrackerEntriesView, AssetsDayPriceChangeView
+from iva_backend.app.api.views.auth import RegisterUserAPIView
 from iva_backend.app.api.views.day_plan import CurrentDayPlanView, CurrentDayGoalsView, DayPlanForDateView, \
     DayGoalsForDateView, DayPlansViewSet, DayGoalsListViewSet, DayPlanActivitiesViewSet, DayGoalsViewSet, \
     DayPlanFromTemplateView, DayPlanTemplatesViewSet, DayPlanTemplateActivitiesViewSet
@@ -59,4 +61,6 @@ urlpatterns = [
     re_path(r'day-plan/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayPlanForDateView.as_view()),
     path('current-day-goals/', CurrentDayGoalsView.as_view()),
     re_path(r'day-goal/(?P<date_string>\d{4}-\d{2}-\d{2})/', DayGoalsForDateView.as_view()),
+    path('auth/oauth2/', include((base_urlpatterns, app_name), namespace=app_name)),
+    path('auth/register/', RegisterUserAPIView.as_view()),
 ]
