@@ -12,24 +12,29 @@ from iva_backend.app.models import DayGoals, DayPlan, DayPlanActivity, DayGoal, 
 
 
 class DayPlansViewSet(ReadOnlyModelViewSet):
-    queryset = DayPlan.objects.all()
     serializer_class = DayPlanSerializer
+
+    def get_queryset(self):
+        return DayPlan.objects.filter(user=self.request.user)
 
 
 class DayPlanActivitiesViewSet(ModelViewSet):
     serializer_class = DayPlanActivitySerializer
 
     def get_queryset(self):
-        return DayPlanActivity.objects.filter(day_plan=self.kwargs.get('day_plan_pk'))
+        return DayPlanActivity.objects.filter(
+            day_plan=self.kwargs.get('day_plan_pk'),
+            day_plan__user=self.request.user
+        )
 
     def perform_create(self, serializer):
-        day_plan = DayPlan.objects.get(pk=self.kwargs.get('day_plan_pk'))
+        day_plan = DayPlan.objects.get(pk=self.kwargs.get('day_plan_pk'), user=self.request.user)
         serializer.save(day_plan=day_plan)
 
 
 class CurrentDayPlanView(APIView):
     def get(self, request) -> Response:
-        day_plan = DayPlan.get_current_day_plan()
+        day_plan = DayPlan.get_current_day_plan(request.user)
         serializer = DayPlanSerializer(day_plan)
         return Response(serializer.data)
 
@@ -37,7 +42,7 @@ class CurrentDayPlanView(APIView):
 class DayPlanForDateView(APIView):
     def get(self, request, date_string) -> Response:
         date = datetime.datetime.strptime(date_string, "%Y-%m-%d").date()
-        day_plan = DayPlan.get_day_plan_for_date(date)
+        day_plan = DayPlan.get_day_plan_for_date(self.request.user, date)
         serializer = DayPlanSerializer(day_plan)
         return Response(serializer.data)
 
@@ -46,7 +51,8 @@ class DayPlanTemplatesViewSet(mixins.CreateModelMixin,
                               mixins.UpdateModelMixin,
                               mixins.ListModelMixin,
                               GenericViewSet):
-    queryset = DayPlanTemplate.objects.all()
+    def get_queryset(self):
+        return DayPlanTemplate.objects.filter(user=self.request.user)
 
     def get_serializer_class(self):
         if self.action == 'partial_update':
@@ -59,17 +65,23 @@ class DayPlanTemplateActivitiesViewSet(ModelViewSet):
     serializer_class = DayPlanTemplateActivitySerializer
 
     def get_queryset(self):
-        return DayPlanTemplateActivity.objects.filter(day_plan_template=self.kwargs.get('day_plan_template_pk'))
+        return DayPlanTemplateActivity.objects.filter(
+            day_plan_template=self.kwargs.get('day_plan_template_pk'),
+            day_plan_template__user=self.request.user
+        )
 
     def perform_create(self, serializer):
-        day_plan_template = DayPlanTemplate.objects.get(pk=self.kwargs.get('day_plan_template_pk'))
+        day_plan_template = DayPlanTemplate.objects.get(
+            pk=self.kwargs.get('day_plan_template_pk'),
+            user=self.request.user
+        )
         serializer.save(day_plan_template=day_plan_template)
 
 
 class DayPlanFromTemplateView(APIView):
     def post(self, request, day_plan_pk, day_plan_template_pk) -> Response:
-        day_plan = get_object_or_404(DayPlan, pk=day_plan_pk)
-        day_plan_template = get_object_or_404(DayPlanTemplate, pk=day_plan_template_pk)
+        day_plan = get_object_or_404(DayPlan, pk=day_plan_pk, user=request.user)
+        day_plan_template = get_object_or_404(DayPlanTemplate, pk=day_plan_template_pk, user=request.user)
 
         for activity in day_plan_template.activities.all():
             DayPlanActivity.objects.create(

@@ -7,5 +7,6 @@ from .measurable_item import *
 from .shopping_list import *
 from .body_mass import *
 from .assets import *
-from .day_plan import *
 from .user import *
+from .day_plan import *
+

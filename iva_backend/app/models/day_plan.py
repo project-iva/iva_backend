@@ -1,7 +1,11 @@
 from __future__ import annotations
+
+import datetime
+
 from django.db import models
 from django.utils import timezone
-import datetime
+
+from iva_backend.app.models import CustomUser
 
 
 class DayGoals(models.Model):
@@ -25,19 +29,25 @@ class DayGoal(models.Model):
 
 
 class DayPlan(models.Model):
-    date = models.DateField(unique=True)
+    date = models.DateField()
+    user = models.ForeignKey(CustomUser, related_name='day_plans', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.date.strftime("%d/%m/%Y")
 
     @staticmethod
-    def get_day_plan_for_date(day_plan_date: datetime.date) -> DayPlan:
-        day_plan, _ = DayPlan.objects.get_or_create(date=day_plan_date)
+    def get_day_plan_for_date(user: CustomUser, day_plan_date: datetime.date) -> DayPlan:
+        day_plan, _ = DayPlan.objects.get_or_create(user=user, date=day_plan_date)
         return day_plan
 
     @staticmethod
-    def get_current_day_plan() -> DayPlan:
-        return DayPlan.get_day_plan_for_date(timezone.now().date())
+    def get_current_day_plan(user: CustomUser) -> DayPlan:
+        return DayPlan.get_day_plan_for_date(user, timezone.now().date())
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['date', 'user'], name='unique_date_user_entry')
+        ]
 
 
 class Activity(models.Model):
@@ -72,6 +82,7 @@ class DayPlanActivity(Activity):
 
 class DayPlanTemplate(models.Model):
     name = models.CharField(max_length=256)
+    user = models.ForeignKey(CustomUser, related_name='day_plans_templates', on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.name
