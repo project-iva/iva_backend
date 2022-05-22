@@ -10,8 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
-from pathlib import Path
 import sys
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'corsheaders',
+    'oauth2_provider',
     'iva_backend.app.apps.AppConfig',
 ]
 
@@ -56,6 +57,7 @@ MIDDLEWARE = [
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = ['http://localhost:8000']
 
 ROOT_URLCONF = 'iva_backend.urls'
 
@@ -148,3 +150,21 @@ IVA_URL = os.environ.get("IVA_URL", "http://iva:5000")
 
 # IEX CLOUD API
 IEX_CLOUD_API_TOKEN = os.environ.get("IEX_CLOUD_API_TOKEN", '<TOKEN>')
+
+# OAuth2 app
+OAUTH2_APP_NAME = 'OAUTH2_APP'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+AUTH_USER_MODEL = 'app.CustomUser'
+OAUTH2_PROVIDER = {
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,
+    'OAUTH2_BACKEND_CLASS': 'oauth2_provider.oauth2_backends.JSONOAuthLibCore',
+}

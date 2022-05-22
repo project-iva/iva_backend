@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN apk update \
-    && apk add git gcc python3-dev musl-dev mariadb-dev
+    && apk add git gcc python3-dev musl-dev mariadb-dev libffi-dev
 
 # install dependencies
 RUN pip install --upgrade pip setuptools wheel
